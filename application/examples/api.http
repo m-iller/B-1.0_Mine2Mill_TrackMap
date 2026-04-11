@@ -1,0 +1,43 @@
+### MOMPS example calls (VS Code REST Client / similar)
+@base = http://127.0.0.1:8000
+@token = <paste bearer>
+
+### Login
+POST {{base}}/api/v1/auth/login
+Content-Type: application/json
+
+{"username": "operator", "password": "demo"}
+
+### Telemetry ingest (replace TOKEN)
+POST {{base}}/api/v1/telemetry/ingest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "machine_id": "00000000-0000-0000-0000-000000000001",
+  "position": {"x": 12.5, "y": 8.2, "z": 10.1},
+  "speed_m_s": 6.2,
+  "fuel_l": 420,
+  "payload_t": 210,
+  "wear_index": 0.04,
+  "event_type": "periodic"
+}
+
+### Simulation state
+GET {{base}}/api/v1/simulation/state
+Authorization: Bearer {{token}}
+
+### Manual tick
+POST {{base}}/api/v1/simulation/tick
+Authorization: Bearer {{token}}
+
+### ML train (synthetic)
+POST {{base}}/api/v1/ml/train/synthetic
+Authorization: Bearer {{token}}
+
+### Predict TTF
+POST {{base}}/api/v1/ml/predict/ttf
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"hours": 320, "wear_mm": 15}
